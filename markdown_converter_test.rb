@@ -86,4 +86,30 @@ What\'s going on?</p>
         html = MarkdownConverter.new(input_string).convert
         assert_equal html, expected
     end
+
+    def test_multiple_links_in_one_line
+        input_string = '```
+Does this [convert](google.com) properly [or](yahoo.com) not?
+        ```'
+
+        expected = '```
+<p>Does this <a href="google.com">convert</a> properly <a href="yahoo.com">or</a> not?</p>
+        ```'
+
+        html = MarkdownConverter.new(input_string).convert
+        assert_equal html, expected
+    end
+
+    def test_bold
+        input_string = '```
+I want **this text** to be bold
+        ```'
+
+        expected = '```
+<p>I want <b>this text</b> to be bold</p>
+        ```'
+
+        html = MarkdownConverter.new(input_string).convert
+        assert_equal html, expected
+    end
 end
