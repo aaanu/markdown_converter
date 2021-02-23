@@ -8,6 +8,7 @@ class MarkdownConverter
         convert_paragraphs
         convert_headers
         convert_bold
+        convert_italics
         convert_links
         return @markdown_string
     end
@@ -50,6 +51,19 @@ class MarkdownConverter
                 line.gsub(/\*{2}.*\*{2}/) do |match|
                     to_bold = match.gsub(/\*{2}/, '') # Replace the stars ** with empty space and bold the words inside of the ** stars
                     "<b>#{to_bold}</b>"
+                end
+            else
+                line
+            end
+        end.join("\n")
+    end
+
+    def convert_italics
+        @markdown_string = @markdown_string.split("\n").each.map do |line|
+            if line.match?(/\_.*\_/)
+                line.gsub(/\_.*\_/) do |match|
+                    to_italicize = match.gsub(/\_/, '')
+                    "<em>#{to_italicize}</em>"
                 end
             else
                 line

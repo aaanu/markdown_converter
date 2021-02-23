@@ -112,4 +112,17 @@ I want **this text** to be bold
         html = MarkdownConverter.new(input_string).convert
         assert_equal html, expected
     end
+
+    def test_italics
+        input_string = '```
+I\'m currently watching _The Bachelor_
+        ```'
+
+        expected = '```
+<p>I\'m currently watching <em>The Bachelor</em></p>
+        ```'
+
+        html = MarkdownConverter.new(input_string).convert
+        assert_equal html, expected
+    end
 end
