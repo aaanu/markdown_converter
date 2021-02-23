@@ -10,6 +10,7 @@ class MarkdownConverter
         convert_bold
         convert_italics
         convert_links
+        convert_lists
         return @markdown_string
     end
 
@@ -74,7 +75,7 @@ class MarkdownConverter
     def convert_links
         @markdown_string = @markdown_string.split("\n").each.map do |line|
             # RegEx to match a [link](text) format
-            if line.match?(/\[(.*?)\]\((.*?)\)/)
+            if line.match?(/\[(.*)\]\((.*)\)/)
                 line.gsub(/\[(.*?)\]\((.*?)\)/) do |link|
                     url = link.match(/\((.*?)\)/)[0].gsub(/\(|\)/, '') # Remove the parentheses
                     text = link.match(/\[(.*?)\]/)[0].gsub(/\[|\]/, '') # Remove the brackets
@@ -90,6 +91,16 @@ class MarkdownConverter
             else
                 line
             end
+        end.join("\n")
+    end
+
+    def convert_lists
+        @markdown_string = @markdown_string.split("\n").each.map do |line|
+            line
+            # unordered lists look like * one * two and tabbing matters
+            # ordered lists look like 1. one 2. two
+            # reference https://guides.github.com/pdfs/markdown-cheatsheet-online.pdf
+            # unordered look for /\*.+\n/, ordered look for /\d\..+/ (+ means at least once)
         end.join("\n")
     end
 
